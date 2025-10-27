@@ -34,8 +34,9 @@ FWIW: A lot of libraries are common, and may already be installed via Homebrew. 
 **Microsoft.Extensions.ObjectPool**: Grab 6.0.36 from NuGet.
 
 Other libraries need to be compiled from source. There are prebuilt binaries in this repo.
-`// TODO: don't just dump binaries on GitHub`
 
+### `// TODO: don't just dump binaries on GitHub`
+ - **msdfgen**: https://github.com/TayIorRobinson/ydms-msdfgen/actions/workflows/ydms-build.yaml
 
 ### Opus
 
