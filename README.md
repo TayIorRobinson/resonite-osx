@@ -37,6 +37,7 @@ Other libraries need to be compiled from source. There are prebuilt binaries in 
 
 ### `// TODO: don't just dump binaries on GitHub`
  - **msdfgen**: https://github.com/TayIorRobinson/ydms-msdfgen/actions/workflows/ydms-build.yaml
+ - **soundpipe**: https://github.com/TayIorRobinson/ydms-soundpipe/actions/workflows/build-macos.yml
 
 ### Opus
 
