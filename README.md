@@ -38,6 +38,7 @@ Other libraries need to be compiled from source. There are prebuilt binaries in 
 ### `// TODO: don't just dump binaries on GitHub`
  - **brotli**: https://github.com/TayIorRobinson/ydms-brotli/actions/workflows/ydms-build.yaml
  - **msdfgen**: https://github.com/TayIorRobinson/ydms-msdfgen/actions/workflows/ydms-build.yaml
+ - **opus**: https://github.com/TayIorRobinson/ydms-opus/actions/workflows/build-ydms.yml
  - **soundpipe**: https://github.com/TayIorRobinson/ydms-soundpipe/actions/workflows/build-macos.yml
 
 ### Opus
