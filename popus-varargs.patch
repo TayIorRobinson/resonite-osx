@@ -1,0 +1,35 @@
+diff --git a/OpusWrapper.cs b/OpusWrapper.cs
+index 6476dc4..a0fe015 100644
+--- a/OpusWrapper.cs
++++ b/OpusWrapper.cs
+@@ -87,10 +87,10 @@ namespace POpusCodec
+         }
+
+         [DllImport(LIBFILE, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+-        private static extern int opus_encoder_ctl(IntPtr st, OpusCtlSetRequest request, int value);
++        private static extern int opus_encoder_ctl(IntPtr st, OpusCtlSetRequest request, ulong __x2, ulong __x3, ulong __x4, ulong __x5, ulong __x6, ulong __x7, int value);^M
+
+         [DllImport(LIBFILE, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+-        private static extern int opus_encoder_ctl(IntPtr st, OpusCtlGetRequest request, ref int value);
++        private static extern int opus_encoder_ctl(IntPtr st, OpusCtlGetRequest request, ulong __x2, ulong __x3, ulong __x4, ulong __x5, ulong __x6, ulong __x7, ref int value);^M
+
+         public static int get_opus_encoder_ctl(IntPtr st, OpusCtlGetRequest request)
+         {
+@@ -98,7 +98,7 @@ namespace POpusCodec
+                 throw new ObjectDisposedException("OpusEncoder");
+
+             int value = 0;
+-            OpusStatusCode statusCode = (OpusStatusCode)opus_encoder_ctl(st, request, ref value);
++            OpusStatusCode statusCode = (OpusStatusCode)opus_encoder_ctl(st, request,0,0,0,0,0,0, ref value);^M
+
+             HandleStatusCode(statusCode);
+
+@@ -110,7 +110,7 @@ namespace POpusCodec
+             if (st == IntPtr.Zero)
+                 throw new ObjectDisposedException("OpusEncoder");
+
+-            OpusStatusCode statusCode = (OpusStatusCode)opus_encoder_ctl(st, request, value);
++            OpusStatusCode statusCode = (OpusStatusCode)opus_encoder_ctl(st, request, 0,0,0,0,0,0,value);^M
+
+             HandleStatusCode(statusCode);
+         }

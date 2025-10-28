@@ -1,0 +1,129 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <ResonitePath>$(SolutionDir)\Resonite</ResonitePath>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+        <OutputPath>$(ResonitePath)</OutputPath>
+    </PropertyGroup>
+    
+
+    <ItemGroup>
+
+        <Reference Include="Awwdio">
+            <HintPath>$(ResonitePath)\Awwdio.dll</HintPath>
+        </Reference>
+        
+        <Reference Include="Elements.Assets">
+            <HintPath>$(ResonitePath)\Elements.Assets.dll</HintPath>
+        </Reference>
+
+        <Reference Include="Elements.Core">
+            <HintPath>$(ResonitePath)\Elements.Core.dll</HintPath>
+        </Reference>
+
+        <Reference Include="FrooxEngine">
+            <HintPath>$(ResonitePath)\FrooxEngine.dll</HintPath>
+        </Reference>
+
+        <Reference Include="FrooxEngine.Store">
+          <HintPath>$(ResonitePath)\FrooxEngine.Store.dll</HintPath>
+        </Reference>
+
+        <Reference Include="PhotonDust">
+            <HintPath>$(ResonitePath)\PhotonDust.dll</HintPath>
+        </Reference>
+
+        <Reference Include="ProtoFlux.Nodes.Core">
+            <HintPath>$(ResonitePath)\ProtoFlux.Nodes.Core.dll</HintPath>
+        </Reference>
+
+        <Reference Include="ProtoFlux.Nodes.FrooxEngine">
+            <HintPath>$(ResonitePath)\ProtoFlux.Nodes.FrooxEngine.dll</HintPath>
+        </Reference>
+
+        <Reference Include="ProtoFluxBindings">
+            <HintPath>$(ResonitePath)\ProtoFluxBindings.dll</HintPath>
+        </Reference>
+
+        <Reference Include="Renderite.Shared">
+          <HintPath>..\Resonite\Renderite.Shared.dll</HintPath>
+        </Reference>
+
+        <Reference Include="Rug.Osc">
+            <HintPath>$(ResonitePath)\Rug.Osc.dll</HintPath>
+        </Reference>
+
+        <Reference Include="SkyFrost.Base">
+            <HintPath>$(ResonitePath)\SkyFrost.Base.dll</HintPath>
+        </Reference>
+
+        <Reference Include="SkyFrost.Base.Models">
+            <HintPath>$(ResonitePath)\SkyFrost.Base.Models.dll</HintPath>
+        </Reference>
+
+
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="libraries\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="libraries\discord_game_sdk.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>discord_game_sdk.dylib</TargetPath>
+        </None>
+
+        <None Update="libraries\FreeImage.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>FreeImage.dylib</TargetPath>
+        </None>
+        <None Update="libraries\libbrolib.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>brolib_x64.dylib</TargetPath>
+        </None>
+        <None Update="libraries\libfreetype6.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>libfreetype6.dylib</TargetPath>
+        </None>
+        <None Update="libraries\libmsdfgen.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>libmsdfgen.dylib</TargetPath>
+        </None>
+        <None Update="libraries\libopus.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>opus.dylib</TargetPath>
+        </None>
+        <None Update="libraries\libphonon.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>libphonon.dylib</TargetPath>
+        </None>
+        <None Update="libraries\libsoundpipe.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>libsoundpipe.dylib</TargetPath>
+        </None>
+        <None Update="libraries\Steamworks.NET.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>Steamworks.NET.dll</TargetPath>
+        </None>
+
+        
+      
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="6.0.36" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\vendor\P-Opus\POpusCodec.csproj" />
+    </ItemGroup>
+
+</Project>
