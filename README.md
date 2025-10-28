@@ -3,7 +3,33 @@ Notes on running Resonite on macOS
 
 ## Does it work?
 
-After a bit of effort, yes. There are issues with video players (see below), and after a while, the server just seems to give up. FrooxEngine doesn't crash, but stops responding to network requests and all users timeout disconnect.
+After a bit of effort, yes. There are issues with video players (see below), and after a while, the server just seems to give up. (If you try spawning Resonite Essentials > Accessibility > Mute Helper Context Menu). It sems to be related to the repeated
+
+```
+Assembly Awwdio is not a data model assembly for this world, cannot decode type: Awwdio.AudioRolloffCurve
+Failed to decode type: [ProtoFluxBindings]FrooxEngine.ProtoFlux.Runtimes.Execution.Nodes.ValueInput<[Awwdio]Awwdio.AudioRolloffCurve>
+Unsupported worker type, couldn't load: Type: , Typename: [ProtoFluxBindings]FrooxEngine.ProtoFlux.Runtimes.Execution.Nodes.ValueInput<[Awwdio]Awwdio.AudioRolloffCurve>, LegacyTypes: False
+```
+in the server logs as the clients crash out with
+```
+❌00:28:13.181 (FPS: 60):	Exception in running sync loop:
+
+System.ArgumentException: Invalid data model type: Awwdio.AudioRolloffCurve
+   at FrooxEngine.TypeManager.EncodeType(BinaryWriter writer, Type type, Boolean isDeconstructing) in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Controllers\TypeManager.cs:line 204
+   at FrooxEngine.TypeManager.EncodeType(BinaryWriter writer, Type type, Boolean isDeconstructing) in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Controllers\TypeManager.cs:line 197
+   at FrooxEngine.SyncBagBase`2.InternalEncodeDelta(BinaryWriter writer, BinaryMessageBatch outboundMessage) in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Sync Members\SyncBagBase.cs:line 408
+   at FrooxEngine.SyncElement.EncodeDelta(BinaryWriter writer, BinaryMessageBatch outboundMessage) in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Base Classes\SyncElement.cs:line 370
+   at FrooxEngine.SyncController.CollectDeltaMessages() in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Controllers\SyncController.cs:line 79
+   at FrooxEngine.SessionSyncManager.GenerateDeltaBatchAndSend() in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Network Session\SessionSyncManager.cs:line 450
+   at FrooxEngine.SessionSyncManager.SyncLoop() in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Network Session\SessionSyncManager.cs:line 289
+   at FrooxEngine.SessionSyncManager.SyncLoopRunner() in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Network Session\SessionSyncManager.cs:line 241
+
+   at System.Environment.get_StackTrace()
+   at Elements.Core.UniLog.Error(String message, Boolean stackTrace) in D:\Workspace\Everion\FrooxEngine\Elements.Core\UniLog.cs:line 78
+   at FrooxEngine.SessionSyncManager.SyncLoopRunner() in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Network Session\SessionSyncManager.cs:line 241
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+
+```
 
 <img width="5344" height="3054" alt="image" src="https://github.com/user-attachments/assets/ca83a830-ca1a-43a1-997b-e76df1827fe5" />
 
@@ -28,18 +54,14 @@ FWIW: A lot of libraries are common, and may already be installed via Homebrew. 
 
 
 
-
-**Steam Audio**: From https://github.com/ValveSoftware/steam-audio/releases/download/v4.7.0/steamaudio_4.7.0.zip grab `lib/osx/libphonon.dylib`
-
-**Microsoft.Extensions.ObjectPool**: Grab 6.0.36 from NuGet.
-
-Other libraries need to be compiled from source. There are prebuilt binaries in this repo.
-
-### `// TODO: don't just dump binaries on GitHub`
+ - **assimp**: https://github.com/Yellow-Dog-Man/assimp/actions/workflows/ccpp.yml
  - **brotli**: https://github.com/TayIorRobinson/ydms-brotli/actions/workflows/ydms-build.yaml
  - **msdfgen**: https://github.com/TayIorRobinson/ydms-msdfgen/actions/workflows/ydms-build.yaml
  - **opus**: https://github.com/TayIorRobinson/ydms-opus/actions/workflows/build-ydms.yml
  - **soundpipe**: https://github.com/TayIorRobinson/ydms-soundpipe/actions/workflows/build-macos.yml
+ - **libphonon** (Steam Audio): https://github.com/ValveSoftware/steam-audio/releases/download/v4.7.0/steamaudio_4.7.0.zip 
+ - **Microsoft.Extensions.ObjectPool**: Grab 6.0.36 from NuGet.
+ - **Discord Game SDK**: https://discord.com/developers/docs/developer-tools/game-sdk
 
 ### Opus
 
@@ -68,4 +90,125 @@ class NoOpusPatch
 ```csharp
 var harmony = new Harmony("guillotine.patch");
 harmony.PatchAll();
+```
+
+### Example csproj
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <ResonitePath>$(SolutionDir)\Resonite</ResonitePath>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+        <OutputPath>$(ResonitePath)</OutputPath>
+    </PropertyGroup>
+    
+
+    <ItemGroup>
+        <Reference Include="Elements.Assets">
+            <HintPath>$(ResonitePath)\Elements.Core.dll</HintPath>
+        </Reference>
+
+        <Reference Include="Elements.Core">
+            <HintPath>$(ResonitePath)\Elements.Core.dll</HintPath>
+        </Reference>
+
+        <Reference Include="FrooxEngine">
+            <HintPath>$(ResonitePath)\FrooxEngine.dll</HintPath>
+        </Reference>
+
+        <Reference Include="FrooxEngine.Store">
+          <HintPath>ban\Debug\net9.0\FrooxEngine.Store.dll</HintPath>
+        </Reference>
+
+        <Reference Include="POpusCodec">
+          <HintPath>ban\Debug\net9.0\POpusCodec.dll</HintPath>
+        </Reference>
+
+        <Reference Include="ProtoFlux.Nodes.Core">
+            <HintPath>$(ResonitePath)\ProtoFlux.Nodes.Core.dll</HintPath>
+        </Reference>
+
+        <Reference Include="ProtoFlux.Nodes.FrooxEngine">
+            <HintPath>$(ResonitePath)\ProtoFlux.Nodes.FrooxEngine.dll</HintPath>
+        </Reference>
+
+        <Reference Include="ProtoFluxBindings">
+            <HintPath>$(ResonitePath)\ProtoFluxBindings.dll</HintPath>
+        </Reference>
+
+        <Reference Include="Rug.Osc">
+            <HintPath>$(ResonitePath)\Rug.Osc.dll</HintPath>
+        </Reference>
+
+        <Reference Include="SkyFrost.Base">
+            <HintPath>$(ResonitePath)\SkyFrost.Base.dll</HintPath>
+        </Reference>
+
+        <Reference Include="SkyFrost.Base.Models">
+            <HintPath>$(ResonitePath)\SkyFrost.Base.Models.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="libraries\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="libraries\discord_game_sdk.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>discord_game_sdk.dylib</TargetPath>
+        </None>
+
+        <None Update="libraries\FreeImage.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>FreeImage.dylib</TargetPath>
+        </None>
+        <None Update="libraries\libbrolib.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>brolib_x64.dylib</TargetPath>
+        </None>
+        <None Update="libraries\libfreetype6.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>libfreetype6.dylib</TargetPath>
+        </None>
+        <None Update="libraries\libmsdfgen.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>libmsdfgen.dylib</TargetPath>
+        </None>
+        <None Update="libraries\libopus.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>opus.dylib</TargetPath>
+        </None>
+        <None Update="libraries\libphonon.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>libphonon.dylib</TargetPath>
+        </None>
+        <None Update="libraries\libsoundpipe.dylib">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>libsoundpipe.dylib</TargetPath>
+        </None>
+        <None Update="libraries\Steamworks.NET.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <TargetPath>Steamworks.NET.dll</TargetPath>
+        </None>
+
+        
+      
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Lib.Harmony" Version="2.4.1" />
+      <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="6.0.36" />
+    </ItemGroup>
+
+</Project>
+
 ```
