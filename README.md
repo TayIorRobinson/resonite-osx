@@ -3,34 +3,6 @@ Notes on running Resonite on macOS
 
 ## Does it work?
 
-After a bit of effort, yes. There are issues with video players (see below), and after a while, the server just seems to give up. (If you try spawning Resonite Essentials > Accessibility > Mute Helper Context Menu). It sems to be related to the repeated
-
-```
-Assembly Awwdio is not a data model assembly for this world, cannot decode type: Awwdio.AudioRolloffCurve
-Failed to decode type: [ProtoFluxBindings]FrooxEngine.ProtoFlux.Runtimes.Execution.Nodes.ValueInput<[Awwdio]Awwdio.AudioRolloffCurve>
-Unsupported worker type, couldn't load: Type: , Typename: [ProtoFluxBindings]FrooxEngine.ProtoFlux.Runtimes.Execution.Nodes.ValueInput<[Awwdio]Awwdio.AudioRolloffCurve>, LegacyTypes: False
-```
-in the server logs as the clients crash out with
-```
-❌00:28:13.181 (FPS: 60):	Exception in running sync loop:
-
-System.ArgumentException: Invalid data model type: Awwdio.AudioRolloffCurve
-   at FrooxEngine.TypeManager.EncodeType(BinaryWriter writer, Type type, Boolean isDeconstructing) in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Controllers\TypeManager.cs:line 204
-   at FrooxEngine.TypeManager.EncodeType(BinaryWriter writer, Type type, Boolean isDeconstructing) in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Controllers\TypeManager.cs:line 197
-   at FrooxEngine.SyncBagBase`2.InternalEncodeDelta(BinaryWriter writer, BinaryMessageBatch outboundMessage) in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Sync Members\SyncBagBase.cs:line 408
-   at FrooxEngine.SyncElement.EncodeDelta(BinaryWriter writer, BinaryMessageBatch outboundMessage) in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Base Classes\SyncElement.cs:line 370
-   at FrooxEngine.SyncController.CollectDeltaMessages() in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Controllers\SyncController.cs:line 79
-   at FrooxEngine.SessionSyncManager.GenerateDeltaBatchAndSend() in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Network Session\SessionSyncManager.cs:line 450
-   at FrooxEngine.SessionSyncManager.SyncLoop() in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Network Session\SessionSyncManager.cs:line 289
-   at FrooxEngine.SessionSyncManager.SyncLoopRunner() in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Network Session\SessionSyncManager.cs:line 241
-
-   at System.Environment.get_StackTrace()
-   at Elements.Core.UniLog.Error(String message, Boolean stackTrace) in D:\Workspace\Everion\FrooxEngine\Elements.Core\UniLog.cs:line 78
-   at FrooxEngine.SessionSyncManager.SyncLoopRunner() in D:\Workspace\Everion\FrooxEngine\FrooxEngine\Data Model\Network Session\SessionSyncManager.cs:line 241
-   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
-
-```
-
 <img width="5344" height="3054" alt="image" src="https://github.com/user-attachments/assets/ca83a830-ca1a-43a1-997b-e76df1827fe5" />
 
 
@@ -97,6 +69,14 @@ var harmony = new Harmony("guillotine.patch");
 harmony.PatchAll();
 ```
 
+### Awwdio
+
+I had weird crashing (try and spawn Resonite Essentials > Accessibility > Context Menu Mute Helper) and adding this load bearing Console.WriteLine fixed it (???????????????????)
+
+```csharp
+Console.WriteLine(Awwdio.AudioRolloffCurve.Linear);
+```
+
 ### Example csproj
 
 ```xml
@@ -117,8 +97,13 @@ harmony.PatchAll();
     
 
     <ItemGroup>
+
+        <Reference Include="Awwdio">
+            <HintPath>$(ResonitePath)\Awwdio.dll</HintPath>
+        </Reference>
+        
         <Reference Include="Elements.Assets">
-            <HintPath>$(ResonitePath)\Elements.Core.dll</HintPath>
+            <HintPath>$(ResonitePath)\Elements.Assets.dll</HintPath>
         </Reference>
 
         <Reference Include="Elements.Core">
@@ -130,11 +115,11 @@ harmony.PatchAll();
         </Reference>
 
         <Reference Include="FrooxEngine.Store">
-          <HintPath>ban\Debug\net9.0\FrooxEngine.Store.dll</HintPath>
+          <HintPath>$(ResonitePath)\FrooxEngine.Store.dll</HintPath>
         </Reference>
 
-        <Reference Include="POpusCodec">
-          <HintPath>ban\Debug\net9.0\POpusCodec.dll</HintPath>
+        <Reference Include="PhotonDust">
+            <HintPath>$(ResonitePath)\PhotonDust.dll</HintPath>
         </Reference>
 
         <Reference Include="ProtoFlux.Nodes.Core">
@@ -160,6 +145,7 @@ harmony.PatchAll();
         <Reference Include="SkyFrost.Base.Models">
             <HintPath>$(ResonitePath)\SkyFrost.Base.Models.dll</HintPath>
         </Reference>
+
     </ItemGroup>
 
     <ItemGroup>
@@ -215,5 +201,6 @@ harmony.PatchAll();
     </ItemGroup>
 
 </Project>
+
 
 ```
