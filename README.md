@@ -50,22 +50,27 @@ If you have a Windows machine, you can just copy the files across, but if you ha
 
 Resonite uses a few native libraries, that are compiled specifically for Windows x64. We'll need to replace these with macOS ARM64 variants.
 
-FWIW: A lot of libraries are common, and may already be installed via Homebrew. If you set the envvar `DYLD_LIBRARY_PATH=/opt/homebrew/lib`, you'll be able to get around recompiling these as they'll already be present from Homebrew. You'll at least need FreeType installed from Homebrew.
+FWIW: A lot of libraries are common, and may already be installed via Homebrew. If you set the envvar `DYLD_LIBRARY_PATH=/opt/homebrew/lib`, you'll be able to get around recompiling these as they'll already be present from Homebrew.
 
 
 
- - **assimp**: https://github.com/Yellow-Dog-Man/assimp/actions/workflows/ccpp.yml
- - **brotli**: https://github.com/TayIorRobinson/ydms-brotli/actions/workflows/ydms-build.yaml
- - **msdfgen**: https://github.com/TayIorRobinson/ydms-msdfgen/actions/workflows/ydms-build.yaml
- - **opus**: https://github.com/TayIorRobinson/ydms-opus/actions/workflows/build-ydms.yml
- - **soundpipe**: https://github.com/TayIorRobinson/ydms-soundpipe/actions/workflows/build-macos.yml
- - **libphonon** (Steam Audio): https://github.com/ValveSoftware/steam-audio/releases/download/v4.7.0/steamaudio_4.7.0.zip 
- - **Microsoft.Extensions.ObjectPool**: Grab 6.0.36 from NuGet.
- - **Discord Game SDK**: https://discord.com/developers/docs/developer-tools/game-sdk
+ - [x] **assimp**: https://github.com/Yellow-Dog-Man/assimp/actions/workflows/ccpp.yml (build expired, so just grab from Homebrew in the meantime)
+ - [x] **brotli**: https://github.com/TayIorRobinson/ydms-brotli/actions/workflows/ydms-build.yaml
+ - [x] **msdfgen**: https://github.com/TayIorRobinson/ydms-msdfgen/actions/workflows/ydms-build.yaml
+ - [x] **opus**: https://github.com/TayIorRobinson/ydms-opus/actions/workflows/build-ydms.yml
+ - [x] **soundpipe**: https://github.com/TayIorRobinson/ydms-soundpipe/actions/workflows/build-macos.yml
+ - [x] **libphonon** (Steam Audio): https://github.com/ValveSoftware/steam-audio/releases/download/v4.7.0/steamaudio_4.7.0.zip 
+ - [x] **Microsoft.Extensions.ObjectPool**: Grab 6.0.36 from NuGet.
+ - [x] **Discord Game SDK**: https://discord.com/developers/docs/developer-tools/game-sdk
+ - [ ] **FreeImage**: (you can get from Homebrew for the time being)
+ - [ ] **FreeType**: (you can get from this repo for the time being)
+ - [ ] **pdfium**: (i didn't bother - its not really needed)
+ - [ ] **unknown unknowns**: (there are other so & dll files in the resonite folder but i dont know what they do)
+
 
 ### Opus
 
-I couldn't get Opus support to work. It kept crashing with an invalid argument error. Here I'll provide a Harmony patch that simply disables error checking.
+I couldn't get Opus support to work. It kept crashing with an invalid argument error. Here I'll provide a Harmony patch that simply disables error checking. (gee I wonder why I'm having crashes related to audio).
 
 This seems to break videoplayers, but voice still works.
 
