@@ -8,7 +8,7 @@ Notes on running Resonite on macOS
 
 ## Obtaining Resonite
 
-To run Resonite, you will of course, require a copy of Resonite itsself. I do not have access to the headless server software (If you do, it will likely be easier to get this working, but may differ from what I'm doing here.), so I had to fashion my own. I don't feel like giving out a copy of this (as y'know, YDMS ask $10/mo to run a headless and I don't want to lower the effort barrier with a janky hack), but if you have any level of skill in C#, it shouldn't be too hard to initialize FrooxEngine, setup Userspace & call `RunUpdateLoop` repeatedly, and if you get stuck, C# decompilers will make short work of Renderite.Host.exe.
+To run Resonite, you will of course, require a copy of Resonite itsself. I do not have access to the headless server software (If you do, it will likely be easier to get this working, but may differ from what I'm doing here.), so I had to fashion my own. I don't feel like giving out a copy of this (as y'know, YDMS ask $10/mo to run a headless and I don't want to lower the effort barrier with a janky hack), but if you have any level of skill in C#, here's the one-liner: `await new StandaloneFrooxEngineRunner(new OSXSystemInfo()).Initialize(LaunchOptions.GetLaunchOptions(args));`
 
 If you have a Windows machine, you can just copy the files across, but if you have Steam installed on your Mac, you can do the following
 
